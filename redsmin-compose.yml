@@ -1,0 +1,19 @@
+version: "3"
+services:
+  redis:
+    build: dbs/redis
+    environment:
+      - REDIS_PASSWORD="BURSTWatchDog"
+    ports:
+      - "6379:6379"
+    depends_on:
+      - mariadb
+    restart: always
+  redsmin:
+    build: monitors/redsmin
+    environment:
+      - REDSMIN_KEY=5ccdee3cfd7ba406d8de3ddc
+      - REDIS_URI="redis://redis:6379"
+      - REDIS_AUTH="BURSTWatchDog"
+    depends_on:
+      - redis

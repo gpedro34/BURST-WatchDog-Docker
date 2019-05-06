@@ -1,0 +1,86 @@
+version: "3"
+services:
+  mariadb:
+    build: dbs/mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=WatchDogRoot@BURSTAlliance
+      - MYSQL_DATABASE=watchdog
+      - MYSQL_USER=watchdog
+      - MYSQL_PASSWORD=WatchDog@BURSTAlliance
+      - TZ=Europe/London
+    ports:
+      - "3306:3306"
+    restart: always
+
+  brs-crawler:
+    build: crawlers/brs-crawler
+    environment:
+      - WORKERS=10
+      - BRS_USER_AGENT=BRS/9.9.9
+      - BRS_TIMEOUT=10000
+      - RESCAN_INTERVAL=15
+      - USE_UTILS_CRAWLER=true
+      - DB_HOST=mariadb
+      - DB_PORT=3306
+      - DB_USER=watchdog
+      - DB_PASS=WatchDog@BURSTAlliance
+      - DB_NAME=watchdog
+    depends_on:
+      - mariadb
+    restart: always
+  utils-crawler:
+    build: crawlers/utils-crawler
+    environment:
+      - WORKERS=50
+      - REFRESH_TIME=250
+      - UPD_RECHECK_TIME=30
+      - RECHECK_INTERVAL=1
+      - DB_HOST=mariadb
+      - DB_PORT=3306
+      - DB_USER=watchdog
+      - DB_PASS=WatchDog@BURSTAlliance
+      - DB_NAME=watchdog
+    depends_on:
+      - mariadb
+      - brs-crawler
+    restart: always
+
+  netx:
+    build: webservers/netx
+    environment:
+      - PORT=80
+      - CORS_MODE=OPEN
+      - CORS_WHITELIST=front,proxy
+      - COMPLETE_PEERS=true
+      - AUTH_API_KEYS=test1,test2,test3
+      - DB_HOST=mariadb
+      - DB_PORT=3306
+      - DB_USER=watchdog
+      - DB_PASS=WatchDog@BURSTAlliance
+      - DB_NAME=watchdog
+      - DB_CON_LIMIT=10
+      - LOG_MODE=dev
+      - LOG_NAME=watchdog-netx
+    depends_on:
+      - mariadb
+    restart: always
+  front:
+    build: webservers/front
+    depends_on:
+      - netx
+    restart: always
+  proxy:
+    build: webservers/nginx-proxy
+    ports:
+      - "80:80"
+    depends_on:
+      - netx
+      - front
+    restart: always
+
+  wait:
+    image: waisbrot/wait
+    links:
+      - mariadb
+    environment:
+      - TARGETS=mariadb:3306

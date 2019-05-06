@@ -1,0 +1,14 @@
+{
+  "name": "BURST-WatchDog-Docker",
+  "version": "1.0.0",
+  "description": "BURST network explorer Watchdog for Docker",
+  "main": "index.js",
+  "scripts": {
+    "install": "bash ./script/install.sh",
+    "install-dev": "bash ./script/install-dev.sh",
+    "launch": "bash ./script/launcher.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
