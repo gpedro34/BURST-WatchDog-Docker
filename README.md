@@ -19,3 +19,6 @@ git clone https://github.com/gpedro34/burst-watchdog-docker
 ```
 ./script/launcher.sh
 ```
+
+# Notes
+## At the moment there is no volumes attached to any containers meaning that neither logs nor DB persist...
