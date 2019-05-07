@@ -1,0 +1,13 @@
+version: "3"
+services:
+  mariadb:
+    build: .
+    environment:
+      - MYSQL_ROOT_PASSWORD=WatchDogRoot@BURSTAlliance
+      - MYSQL_DATABASE=watchdog
+      - MYSQL_USER=watchdog
+      - MYSQL_PASSWORD=WatchDog@BURSTAlliance
+      - TZ=Europe/London
+    ports:
+      - "3309:3306"
+    restart: always
