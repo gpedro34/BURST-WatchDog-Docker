@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-docker-compose build \
+docker-compose down \
+  && docker-compose build \
   && docker-compose up -d \
   && docker-compose start wait \
   && docker-compose restart brs-crawler \
