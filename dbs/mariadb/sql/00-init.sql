@@ -106,3 +106,7 @@ COLLATE=utf8mb4_general_ci;
 
 -- insert bootstrap peer(s)
 INSERT peers (address) VALUES ('wallet.burst-alliance.org:8123') ON DUPLICATE KEY UPDATE last_scanned=NULL;
+INSERT peers (address) VALUES ('burst.sagichdir.net:8123') ON DUPLICATE KEY UPDATE last_scanned=NULL;
+INSERT peers (address) VALUES ('burst.megash.it:8123') ON DUPLICATE KEY UPDATE last_scanned=NULL;
+INSERT peers (address) VALUES ('burstsecurity.com:8123') ON DUPLICATE KEY UPDATE last_scanned=NULL;
+INSERT peers (address) VALUES ('wallet.starburst.pink:8123') ON DUPLICATE KEY UPDATE last_scanned=NULL;
