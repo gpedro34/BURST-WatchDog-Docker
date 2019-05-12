@@ -11,6 +11,21 @@ services:
     ports:
       - "3306:3306"
     restart: always
+  wait:
+    image: waisbrot/wait
+    links:
+      - mariadb
+    environment:
+      - TARGETS=mariadb:3306
+  adminer:
+    build: monitors/adminer
+    # environment:
+      # List of designs - https://github.com/vrana/adminer/tree/master/designs
+      # For custom design replace /design/adminer.css and comment next line
+      # - ADMINER_DESIGN=pepa-linha
+    restart: always
+    ports:
+      - "8080:8080"
 
   brs-crawler:
     build: crawlers/brs-crawler
@@ -77,10 +92,3 @@ services:
       - netx
       - front
     restart: always
-
-  wait:
-    image: waisbrot/wait
-    links:
-      - mariadb
-    environment:
-      - TARGETS=mariadb:3306
