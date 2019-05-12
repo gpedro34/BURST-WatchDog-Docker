@@ -8,6 +8,8 @@ services:
       - MYSQL_USER=watchdog
       - MYSQL_PASSWORD=WatchDog@BURSTAlliance
       - TZ=Europe/London
+    volumes:
+      - database:/var/lib/mysql
     ports:
       - "3306:3306"
     restart: always
@@ -55,6 +57,8 @@ services:
       - DB_USER=watchdog
       - DB_PASS=WatchDog@BURSTAlliance
       - DB_NAME=watchdog
+    volumes:
+      - ./data/logs/utils-crawler:/utils-crawler/data/
     depends_on:
       - mariadb
       - brs-crawler
@@ -76,6 +80,8 @@ services:
       - DB_CON_LIMIT=10
       - LOG_MODE=dev
       - LOG_NAME=watchdog-netx
+    volumes:
+      - ./data/logs/netx:/burst-netx/server/logging/logs/
     depends_on:
       - mariadb
     restart: always
@@ -92,3 +98,6 @@ services:
       - netx
       - front
     restart: always
+
+volumes:
+  database:
